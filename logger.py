@@ -67,6 +67,9 @@ class Logger:
     
     def _setup_headers(self):
         """Set up column headers in the worksheet."""
+        if self.worksheet is None:
+            return
+            
         headers = [
             'Date',
             'Check Type',
@@ -130,7 +133,7 @@ class Logger:
                 rows.append(row)
             
             # Append to worksheet
-            if rows:
+            if rows and self.worksheet is not None:
                 self.worksheet.append_rows(rows)
                 print(f"✅ Synced {len(rows)} offline entries to Google Sheets")
             
@@ -143,7 +146,7 @@ class Logger:
             return False
     
     def log_check(self, check_type: str, required_count: int, actual_count: int, 
-                  status: str, solved_problems: List[str] = None, notes: str = "") -> bool:
+                  status: str, solved_problems: Optional[List[str]] = None, notes: str = "") -> bool:
         """Log a check result."""
         if solved_problems is None:
             solved_problems = []
