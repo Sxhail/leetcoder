@@ -92,10 +92,13 @@ class LeetCodeEnforcer:
             if status == "behind":
                 await self._handle_behind_on_goals(check_type, required_count, actual_count, solved_problems)
             else:
-                # If on track and it's evening, unblock distractions
-                if check_type == "evening" and status == "on_track":
+                # If on track, unblock distractions
+                if status == "on_track":
                     self._unblock_distractions()
-                    self.notifier.notify_daily_goal_met()
+                    if check_type == "evening":
+                        self.notifier.notify_daily_goal_met()
+                    else:
+                        self.notifier.notify_system_unblocked()
             
             return True
             
@@ -161,9 +164,18 @@ class LeetCodeEnforcer:
                 progress = await self.progress_tracker.check_today_progress()
                 actual_count = progress.get('blind75_solved', 0)
                 
+                # Check if we've met the daily target
                 if actual_count >= config.DAILY_TARGET:
                     print("✅ Daily target met. Stopping polling.")
                     self._unblock_distractions()
+                    self.notifier.notify_daily_goal_met()
+                    break
+                
+                # Check if we've met the midday target (for early unblocking)
+                elif actual_count >= config.MIDDAY_TARGET:
+                    print("✅ Midday target met. Unblocking distractions.")
+                    self._unblock_distractions()
+                    self.notifier.notify_system_unblocked()
                     break
                 
                 print(f"⏰ Polling: {actual_count}/{config.DAILY_TARGET} problems solved")

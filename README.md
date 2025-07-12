@@ -1,15 +1,15 @@
 # LeetCode Enforcer Bot
 
-A lightweight Python-based productivity tool that ensures you solve at least **4 LeetCode Blind 75 series** questions every day. If you haven't met your daily target by the morning check, it blocks distractions and guides you through your pending problems—with **adaptive micro-goals** and **smart reminders** to keep you on track.
+A lightweight Python-based productivity tool that ensures you solve at least **2 LeetCode Blind 75 series** questions every day. If you haven't met your daily target by the morning check, it blocks distractions and guides you through your pending problems—with **adaptive micro-goals** and **smart reminders** to keep you on track.
 
 ## 📖 Overview
 
 Each day the bot:
 
 1. **Adaptive micro-goal checks** (half-day targets)  
-2. **Morning check** between 9 AM–11 AM: did you solve at least 2 problems yesterday?  
-3. **Midday check** at 12 PM: did you solve at least 2 problems so far today?  
-4. **Evening check** at 6 PM: did you solve a total of 4 problems today?  
+2. **Morning check** between 9 AM–11 AM: did you solve at least 1 problem yesterday?
+3. **Midday check** at 12 PM: did you solve at least 1 problem so far today?
+4. **Evening check** at 6 PM: did you solve a total of 2 problems today?  
 5. If any check fails, it blocks distractions and guides you through the next pending Blind 75 problem until you hit the daily target.
 
 ## ⚙️ Key Features
