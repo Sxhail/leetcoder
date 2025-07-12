@@ -25,12 +25,12 @@ class TrayUI:
             import pystray
             from PIL import Image, ImageDraw
             
-            # Create a simple icon (16x16 pixels)
-            image = Image.new('RGB', (16, 16), color='#1f2937')
+            # Create a simple icon (16x16 pixels) with LeetCode colors
+            image = Image.new('RGB', (16, 16), color='#1a1a1a')
             draw = ImageDraw.Draw(image)
             
-            # Draw a simple "LC" (LeetCode) text
-            draw.text((2, 2), "LC", fill='#10b981', font=None)
+            # Draw a simple "LC" (LeetCode) text in LeetCode orange
+            draw.text((2, 2), "LC", fill='#ffa116', font=None)
             
             # Create menu items
             menu = pystray.Menu(
@@ -60,7 +60,17 @@ class TrayUI:
     def _open_next_problem(self, icon, item):
         """Handle open next problem action."""
         if self.on_open_next_problem:
-            threading.Thread(target=self.on_open_next_problem, daemon=True).start()
+            # Handle async callback
+            import asyncio
+            try:
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
+                loop.run_until_complete(self.on_open_next_problem())
+                loop.close()
+            except Exception as e:
+                print(f"❌ Error in async callback: {e}")
+                # Fallback to sync call
+                threading.Thread(target=self.on_open_next_problem, daemon=True).start()
         else:
             print("⚠️ Open next problem callback not set")
     
@@ -69,18 +79,7 @@ class TrayUI:
         if self.on_view_logs:
             threading.Thread(target=self.on_view_logs, daemon=True).start()
         else:
-            # Default behavior: open Google Sheets
-            self._open_google_sheets()
-    
-    def _open_google_sheets(self):
-        """Open Google Sheets in browser."""
-        try:
-            # This would need to be configured with the actual sheet URL
-            # For now, we'll just open the Google Sheets homepage
-            webbrowser.open("https://sheets.google.com")
-            print("🔗 Opening Google Sheets")
-        except Exception as e:
-            print(f"❌ Error opening Google Sheets: {e}")
+            print("📊 Logs functionality removed (Google Sheets integration disabled)")
     
     def _exit_tray(self, icon, item):
         """Handle exit action."""

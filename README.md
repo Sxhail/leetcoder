@@ -21,7 +21,7 @@ Each day the bot:
 - **System-wide blocking** of distracting domains via hosts-file edits  
 - **Guided problem workflow:** opens NeetCode → LeetCode for each pending Blind 75 question  
 - **Progress polling** every 10 minutes until the micro-goal or daily target is met  
-- **Google Sheets logging** of each check, timestamps, and outcomes  
+  
 - **Manual "Completed" button** to finalize and re-verify via LeetCode API  
 
 ## 🏗️ Architecture
@@ -40,7 +40,7 @@ Each day the bot:
    - Calls AuthManager, ProgressTracker, then either Logger or Blocker+Workflow+Notifier
 
 3. **AuthManager**
-   - Securely stores and retrieves LeetCode session cookie and Google service account path
+   - Securely stores and retrieves LeetCode session cookie
    - Uses keyring for secure credential storage
 
 4. **ProgressTracker**
@@ -56,15 +56,13 @@ Each day the bot:
    - Opens next unsolved problem on NeetCode.io and LeetCode.com
    - Provides progress summaries and problem suggestions
 
-7. **Logger**
-   - Uses gspread + Google Sheets API for logging
-   - Handles offline caching with automatic sync
+
 
 8. **Notifier**
    - Uses Windows Toast notifications with plyer fallback
    - Sends contextual notifications based on progress
 
-9. **TrayUI**
+7. **TrayUI**
    - System tray icon with menu for manual actions
    - Mark Completed, Open Next Problem, View Logs
 
@@ -75,7 +73,6 @@ Each day the bot:
 - Python 3.8+
 - Windows 10/11 (for hosts file editing and Windows Task Scheduler)
 - LeetCode account
-- Google Cloud project with Sheets API enabled
 
 ### Setup
 
@@ -109,12 +106,7 @@ Each day the bot:
 4. Find 'LEETCODE_SESSION' cookie and copy its value
 5. Enter it when prompted during setup
 
-#### Google Service Account
-1. Go to https://console.cloud.google.com
-2. Create a new project or select existing one
-3. Enable Google Sheets API
-4. Create a service account and download the JSON key file
-5. Enter the path to the JSON file during setup
+
 
 ## 📋 Usage
 
@@ -158,7 +150,7 @@ python main.py
 Right-click the system tray icon for:
 - **Mark Completed**: Re-check progress and unblock if goals met
 - **Open Next Problem**: Open next unsolved Blind 75 problem
-- **View Logs**: Open Google Sheets in browser
+- **View Logs**: Logs functionality removed (Google Sheets integration disabled)
 - **Exit**: Stop the bot
 
 ## 📊 Configuration
@@ -176,8 +168,7 @@ The bot tracks your progress through:
 
 1. **LeetCode API Integration**: Queries your submission history
 2. **Blind 75 List**: Complete list of 75 essential problems
-3. **Google Sheets Logging**: Detailed logs with timestamps
-4. **Offline Caching**: Continues working without internet
+3. **Console Logging**: Progress logged to console output
 
 ## 🔧 Troubleshooting
 
@@ -189,10 +180,9 @@ The bot tracks your progress through:
 2. **"LeetCode session not found"**
    - Re-run setup: `python main.py --setup`
 
-3. **"Google service account path not found"**
-   - Check the JSON file path and re-run setup
 
-4. **"Progress tracker not initialized"**
+
+3. **"Progress tracker not initialized"**
    - Verify LeetCode session is valid and not expired
 
 ### Debug Mode
@@ -227,7 +217,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - [LeetCode](https://leetcode.com) for the problem platform
 - [NeetCode](https://neetcode.io) for the Blind 75 list
 - [Playwright](https://playwright.dev) for browser automation
-- [Google Sheets API](https://developers.google.com/sheets/api) for logging
+
 
 ## 📞 Support
 

@@ -37,7 +37,7 @@ class Notifier:
             from plyer import notification
             
             # Simple notification without icon to avoid issues
-            notification.notify(
+            notification.notify(  # type: ignore[attr-defined]
                 title=title,
                 message=message,
                 timeout=10
@@ -59,7 +59,7 @@ class Notifier:
         try:
             from plyer import notification
             
-            notification.notify(
+            notification.notify(  # type: ignore[attr-defined]
                 title=title,
                 message=message,
                 app_icon=self.icon if self.icon and self.system == "Windows" else None,

@@ -13,7 +13,6 @@ from auth_manager import AuthManager
 from progress_tracker import ProgressTracker
 from blocker import Blocker
 from workflow_manager import WorkflowManager
-from logger import Logger
 from notifier import Notifier
 from tray_ui import TrayUI
 import config
@@ -37,13 +36,9 @@ class LeetCodeEnforcer:
         """Initialize components that require credentials."""
         # Get credentials
         leetcode_session = self.auth_manager.get_leetcode_session()
-        google_path = self.auth_manager.get_google_service_account_path()
         
         if leetcode_session:
             self.progress_tracker = ProgressTracker(leetcode_session)
-        
-        if google_path:
-            self.logger = Logger(google_path)
     
     async def run_check(self, check_type: str) -> bool:
         """Run a specific check (morning, midday, evening)."""
@@ -90,16 +85,8 @@ class LeetCodeEnforcer:
                 status = "behind"
                 print(f"⚠️ {check_type.title()} check failed: {actual_count}/{required_count} problems solved")
             
-            # Log the check
-            if self.logger:
-                self.logger.log_check(
-                    check_type=check_type,
-                    required_count=required_count,
-                    actual_count=actual_count,
-                    status=status,
-                    solved_problems=solved_problems,
-                    notes=f"Check for {target_date}"
-                )
+            # Log the check (removed Google Sheets logging)
+            print(f"📝 {check_type.title()} check logged: {actual_count}/{required_count} problems solved")
             
             # Handle being behind on goals
             if status == "behind":
@@ -114,14 +101,6 @@ class LeetCodeEnforcer:
             
         except Exception as e:
             print(f"❌ Error running {check_type} check: {e}")
-            if self.logger:
-                self.logger.log_check(
-                    check_type=check_type,
-                    required_count=0,
-                    actual_count=0,
-                    status="error",
-                    notes=f"Error: {str(e)}"
-                )
             return False
     
     async def _handle_behind_on_goals(self, check_type: str, required: int, actual: int, solved_problems: list):
@@ -135,11 +114,33 @@ class LeetCodeEnforcer:
         # Send notification
         self.notifier.notify_behind_on_goals(check_type, required, actual, solved_problems)
         
-        # Open next problem
-        if self.workflow_manager:
-            next_problem = self.workflow_manager.open_next_problem(solved_problems)
-            if next_problem:
-                print(f"📝 Opened next problem: {next_problem['title']}")
+        # Get overall Blind 75 progress to find the next unsolved problem
+        if self.workflow_manager and self.progress_tracker:
+            try:
+                # Get all recent submissions to determine overall Blind 75 progress
+                submissions = await self.progress_tracker.get_user_submissions()
+                all_solved_slugs = []
+                
+                for submission in submissions:
+                    if submission.get('statusDisplay') == 'Accepted':
+                        title_slug = submission.get('titleSlug')
+                        if title_slug:
+                            all_solved_slugs.append(title_slug)
+                
+                # Get unique solved problems
+                all_solved_slugs = list(set(all_solved_slugs))
+                print(f"📊 Total solved problems: {len(all_solved_slugs)}")
+                
+                # Open next unsolved problem
+                next_problem = self.workflow_manager.open_next_problem(all_solved_slugs)
+                if next_problem:
+                    print(f"📝 Opened next problem: {next_problem['title']}")
+            except Exception as e:
+                print(f"❌ Error getting overall progress: {e}")
+                # Fallback to today's solved problems
+                next_problem = self.workflow_manager.open_next_problem(solved_problems)
+                if next_problem:
+                    print(f"📝 Opened next problem: {next_problem['title']}")
     
     def _unblock_distractions(self):
         """Unblock distractions when goals are met."""
@@ -182,21 +183,27 @@ class LeetCodeEnforcer:
         # For now, just unblock distractions
         self._unblock_distractions()
     
-    def open_next_problem(self):
+    async def open_next_problem(self):
         """Handle opening next problem from tray."""
         print("🔗 Opening next problem from tray...")
         
         if self.progress_tracker:
             # Get current progress to determine solved problems
-            # This is a simplified version - in practice, you'd get the actual solved problems
-            solved_problems = []  # This should be retrieved from progress tracker
-            self.workflow_manager.open_next_problem(solved_problems)
+            try:
+                progress = await self.progress_tracker.check_today_progress()
+                solved_problems = progress.get('solved_problems', [])
+                print(f"📊 Current solved problems: {solved_problems}")
+                next_problem = self.workflow_manager.open_next_problem(solved_problems)
+                if next_problem:
+                    print(f"📝 Opened next problem: {next_problem['title']}")
+            except Exception as e:
+                print(f"❌ Error getting progress: {e}")
+                # Fallback to first problem if error
+                self.workflow_manager.open_next_problem([])
     
     def view_logs(self):
         """Handle viewing logs from tray."""
-        print("📊 Opening logs...")
-        import webbrowser
-        webbrowser.open("https://sheets.google.com")
+        print("📊 Logs functionality removed (Google Sheets integration disabled)")
     
     def start_tray_ui(self):
         """Start the system tray interface."""

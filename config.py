@@ -43,14 +43,9 @@ DISTRACTING_DOMAINS = [
 LEETCODE_BASE_URL = "https://leetcode.com"
 NEETCODE_BASE_URL = "https://neetcode.io"
 
-# Google Sheets settings
-SHEET_NAME = "LeetCode Progress"
-WORKSHEET_NAME = "Daily Checks"
-
 # File paths
 HOSTS_FILE = r"C:\Windows\System32\drivers\etc\hosts"
 PROBLEMS_FILE = "problems.json"
-OFFLINE_CACHE_FILE = "offline_cache.json"
 
 # Notification settings
 NOTIFICATION_TITLE = "LeetCode Enforcer"
