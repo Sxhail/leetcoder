@@ -30,105 +30,72 @@ class ProgressTracker:
     
     async def get_user_submissions(self) -> List[Dict]:
         """Get user's recent submissions using GraphQL API."""
-        async with async_playwright() as p:
-            # Try to use Brave browser if available
+        import aiohttp
+        
+        try:
+            # Extract username from session token (JWT decode)
+            import jwt
             try:
-                # Common Brave paths on Windows
-                brave_paths = [
-                    r"C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe",
-                    r"C:\Program Files (x86)\BraveSoftware\Brave-Browser\Application\brave.exe",
-                    os.path.expanduser(r"~\AppData\Local\BraveSoftware\Brave-Browser\Application\brave.exe")
-                ]
+                # Decode JWT token to get username
+                decoded = jwt.decode(self.leetcode_session, options={"verify_signature": False})
+                username = decoded.get('username', 'suhailjameel7')  # fallback to your username
+                print(f"👤 Using username: {username}")
+            except:
+                username = 'suhailjameel7'  # fallback username
+                print(f"👤 Using fallback username: {username}")
+            
+            # GraphQL query to get recent submissions
+            graphql_query = """
+            query recentAcSubmissionList($username: String!, $limit: Int!) {
+                recentAcSubmissionList(username: $username, limit: $limit) {
+                    id
+                    title
+                    titleSlug
+                    timestamp
+                    statusDisplay
+                    lang
+                }
+            }
+            """
+            
+            # Make direct HTTP request
+            async with aiohttp.ClientSession() as session:
+                headers = {
+                    'Content-Type': 'application/json',
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+                }
                 
-                brave_path = None
-                for path in brave_paths:
-                    if os.path.exists(path):
-                        brave_path = path
-                        break
-                
-                if brave_path:
-                    print(f"🔍 Using Brave browser: {brave_path}")
-                    browser = await p.chromium.launch(
-                        headless=True,
-                        executable_path=brave_path
-                    )
-                else:
-                    print("⚠️ Brave not found, using default Chromium")
-                    browser = await p.chromium.launch(headless=True)
-            except Exception as e:
-                print(f"⚠️ Error launching Brave: {e}, falling back to Chromium")
-                browser = await p.chromium.launch(headless=True)
-            context = await browser.new_context()
-            
-            # Set LeetCode session cookie
-            await context.add_cookies([{
-                'name': 'LEETCODE_SESSION',
-                'value': self.leetcode_session,
-                'domain': '.leetcode.com',
-                'path': '/'
-            }])
-            
-            page = await context.new_page()
-            
-            try:
-                # GraphQL query to get recent submissions
-                graphql_query = """
-                query recentAcSubmissions($username: String!, $limit: Int!) {
-                    recentAcSubmissions(username: $username, limit: $limit) {
-                        id
-                        title
-                        titleSlug
-                        timestamp
-                        statusDisplay
-                        lang
+                data = {
+                    'query': graphql_query,
+                    'variables': {
+                        'username': username,
+                        'limit': 100
                     }
                 }
-                """
                 
-                # Get username from profile
-                print(f"🌐 Navigating to {self.base_url}/profile/")
-                await page.goto(f"{self.base_url}/profile/", timeout=60000)  # 60 seconds
-                print("⏳ Waiting for page to load...")
-                await page.wait_for_load_state('networkidle', timeout=60000)
-                print("✅ Page loaded successfully")
-                
-                # Extract username from URL or page content
-                username = await self._extract_username(page)
-                if not username:
-                    print("❌ Could not extract username")
-                    return []
-                
-                # Make GraphQL request
-                response = await page.evaluate(f"""
-                async () => {{
-                    const response = await fetch('{self.base_url}/graphql', {{
-                        method: 'POST',
-                        headers: {{
-                            'Content-Type': 'application/json',
-                        }},
-                        body: JSON.stringify({{
-                            query: `{graphql_query}`,
-                            variables: {{
-                                username: '{username}',
-                                limit: 100
-                            }}
-                        }})
-                    }});
-                    return await response.json();
-                }}
-                """)
-                
-                if 'data' in response and 'recentAcSubmissions' in response['data']:
-                    return response['data']['recentAcSubmissions']
-                else:
-                    print("❌ No submission data found")
-                    return []
-                    
-            except Exception as e:
-                print(f"❌ Error fetching submissions: {e}")
-                return []
-            finally:
-                await browser.close()
+                print(f"🌐 Making GraphQL request to {self.base_url}/graphql")
+                async with session.post(
+                    f"{self.base_url}/graphql",
+                    json=data,
+                    headers=headers,
+                    timeout=aiohttp.ClientTimeout(total=30)
+                ) as response:
+                    if response.status == 200:
+                        result = await response.json()
+                        if 'data' in result and 'recentAcSubmissionList' in result['data']:
+                            submissions = result['data']['recentAcSubmissionList']
+                            print(f"✅ Found {len(submissions)} recent submissions")
+                            return submissions
+                        else:
+                            print("❌ No submission data in response")
+                            return []
+                    else:
+                        print(f"❌ HTTP {response.status}: {await response.text()}")
+                        return []
+                        
+        except Exception as e:
+            print(f"❌ Error fetching submissions: {e}")
+            return []
     
     async def _extract_username(self, page) -> Optional[str]:
         """Extract username from LeetCode profile page."""
