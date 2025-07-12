@@ -3,6 +3,7 @@ progress_tracker.py - Tracks LeetCode Blind 75 progress using Playwright and API
 """
 
 import json
+import os
 import asyncio
 from datetime import datetime, timedelta
 from typing import List, Dict, Optional, Tuple
@@ -30,7 +31,33 @@ class ProgressTracker:
     async def get_user_submissions(self) -> List[Dict]:
         """Get user's recent submissions using GraphQL API."""
         async with async_playwright() as p:
-            browser = await p.chromium.launch(headless=True)
+            # Try to use Brave browser if available
+            try:
+                # Common Brave paths on Windows
+                brave_paths = [
+                    r"C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe",
+                    r"C:\Program Files (x86)\BraveSoftware\Brave-Browser\Application\brave.exe",
+                    os.path.expanduser(r"~\AppData\Local\BraveSoftware\Brave-Browser\Application\brave.exe")
+                ]
+                
+                brave_path = None
+                for path in brave_paths:
+                    if os.path.exists(path):
+                        brave_path = path
+                        break
+                
+                if brave_path:
+                    print(f"🔍 Using Brave browser: {brave_path}")
+                    browser = await p.chromium.launch(
+                        headless=True,
+                        executable_path=brave_path
+                    )
+                else:
+                    print("⚠️ Brave not found, using default Chromium")
+                    browser = await p.chromium.launch(headless=True)
+            except Exception as e:
+                print(f"⚠️ Error launching Brave: {e}, falling back to Chromium")
+                browser = await p.chromium.launch(headless=True)
             context = await browser.new_context()
             
             # Set LeetCode session cookie
@@ -59,8 +86,11 @@ class ProgressTracker:
                 """
                 
                 # Get username from profile
-                await page.goto(f"{self.base_url}/profile/")
-                await page.wait_for_load_state('networkidle')
+                print(f"🌐 Navigating to {self.base_url}/profile/")
+                await page.goto(f"{self.base_url}/profile/", timeout=60000)  # 60 seconds
+                print("⏳ Waiting for page to load...")
+                await page.wait_for_load_state('networkidle', timeout=60000)
+                print("✅ Page loaded successfully")
                 
                 # Extract username from URL or page content
                 username = await self._extract_username(page)

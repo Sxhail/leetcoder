@@ -95,6 +95,8 @@ class AuthManager:
         print("3. Go to Application/Storage tab")
         print("4. Find 'LEETCODE_SESSION' cookie and copy its value")
         
+        # For testing, you can hardcode the session here temporarily
+        # session = "your_session_token_here"
         session = input("Enter your LeetCode session value: ").strip()
         if session:
             self.set_leetcode_session(session)

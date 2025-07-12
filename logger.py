@@ -22,9 +22,9 @@ class Logger:
             'https://spreadsheets.google.com/feeds',
             'https://www.googleapis.com/auth/drive'
         ]
-        self.credentials = None
-        self.client = None
-        self.worksheet = None
+        self.credentials: Optional[Credentials] = None
+        self.client: Optional[gspread.Client] = None
+        self.worksheet: Optional[gspread.Worksheet] = None
     
     def _load_credentials(self) -> bool:
         """Load Google service account credentials."""
@@ -177,8 +177,9 @@ class Logger:
                     log_entry['notes']
                 ]
                 
-                self.worksheet.append_row(row)
-                print(f"✅ Logged {check_type} check to Google Sheets")
+                if self.worksheet is not None:
+                    self.worksheet.append_row(row)
+                    print(f"✅ Logged {check_type} check to Google Sheets")
                 
                 # Sync any offline cache
                 self._sync_offline_cache()
