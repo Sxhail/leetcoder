@@ -109,4 +109,8 @@ Desktop.ini
 .env
 offline_cache.json
 *.sqlite3
-*.db 
+*.db
+
+# Google service account credentials
+*.json
+!problems.json 
