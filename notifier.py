@@ -3,6 +3,7 @@ notifier.py - Sends notifications to the user if behind on goals.
 """
 
 import platform
+import os
 from typing import Optional
 import config
 
@@ -31,45 +32,26 @@ class Notifier:
     
     def _send_windows_notification(self, message: str, title: str, 
                                   notification_type: str) -> bool:
-        """Send Windows Toast notification."""
+        """Send Windows notification using plyer."""
         try:
-            # Try to use winrt for Windows Toast notifications
-            import winrt.windows.ui.notifications as notifications
-            import winrt.windows.data.xml.dom as dom
+            from plyer import notification
             
-            # Create toast notification
-            toast_xml = f"""
-            <toast>
-                <visual>
-                    <binding template="ToastGeneric">
-                        <text>{title}</text>
-                        <text>{message}</text>
-                    </binding>
-                </visual>
-            </toast>
-            """
-            
-            # Parse XML
-            xml_doc = dom.XmlDocument()
-            xml_doc.load_xml(toast_xml)
-            
-            # Create notification
-            toast = notifications.ToastNotification(xml_doc)
-            
-            # Show notification
-            notifier = notifications.ToastNotificationManager.create_toast_notifier("LeetCode Enforcer")
-            notifier.show(toast)
+            # Simple notification without icon to avoid issues
+            notification.notify(
+                title=title,
+                message=message,
+                timeout=10
+            )
             
             print(f"✅ Windows notification sent: {title} - {message}")
             return True
             
         except ImportError:
-            # Fall back to plyer if winrt is not available
-            print("⚠️ winrt not available, falling back to plyer")
-            return self._send_plyer_notification(message, title, notification_type)
+            print("❌ plyer not available for notifications")
+            return False
         except Exception as e:
             print(f"❌ Windows notification failed: {e}")
-            return self._send_plyer_notification(message, title, notification_type)
+            return False
     
     def _send_plyer_notification(self, message: str, title: str, 
                                 notification_type: str) -> bool:
