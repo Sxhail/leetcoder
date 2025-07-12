@@ -179,25 +179,39 @@ class LeetCodeEnforcer:
         """Handle manual completion marking."""
         print("✅ Manual completion marked. Re-checking progress...")
         
-        # This would typically re-check progress and unblock if needed
-        # For now, just unblock distractions
-        self._unblock_distractions()
+        # Try to unblock distractions
+        try:
+            self._unblock_distractions()
+        except Exception as e:
+            print(f"⚠️ Could not unblock distractions: {e}")
+            print("💡 Run the bot as administrator to modify hosts file")
     
     async def open_next_problem(self):
         """Handle opening next problem from tray."""
         print("🔗 Opening next problem from tray...")
         
-        if self.progress_tracker:
-            # Get current progress to determine solved problems
+        if self.progress_tracker and self.workflow_manager:
             try:
-                progress = await self.progress_tracker.check_today_progress()
-                solved_problems = progress.get('solved_problems', [])
-                print(f"📊 Current solved problems: {solved_problems}")
-                next_problem = self.workflow_manager.open_next_problem(solved_problems)
+                # Get all recent submissions to determine overall Blind 75 progress
+                submissions = await self.progress_tracker.get_user_submissions()
+                all_solved_slugs = []
+                
+                for submission in submissions:
+                    if submission.get('statusDisplay') == 'Accepted':
+                        title_slug = submission.get('titleSlug')
+                        if title_slug:
+                            all_solved_slugs.append(title_slug)
+                
+                # Get unique solved problems
+                all_solved_slugs = list(set(all_solved_slugs))
+                print(f"📊 Total solved problems: {len(all_solved_slugs)}")
+                
+                # Open next unsolved problem
+                next_problem = self.workflow_manager.open_next_problem(all_solved_slugs)
                 if next_problem:
                     print(f"📝 Opened next problem: {next_problem['title']}")
             except Exception as e:
-                print(f"❌ Error getting progress: {e}")
+                print(f"❌ Error getting overall progress: {e}")
                 # Fallback to first problem if error
                 self.workflow_manager.open_next_problem([])
     

@@ -26,11 +26,11 @@ class TrayUI:
             from PIL import Image, ImageDraw
             
             # Create a simple icon (16x16 pixels) with LeetCode colors
-            image = Image.new('RGB', (16, 16), color='#1a1a1a')
+            image = Image.new('RGB', (16, 16), color=(26, 26, 26))  # type: ignore
             draw = ImageDraw.Draw(image)
             
             # Draw a simple "LC" (LeetCode) text in LeetCode orange
-            draw.text((2, 2), "LC", fill='#ffa116', font=None)
+            draw.text((2, 2), "LC", fill=(255, 161, 22), font=None)  # type: ignore
             
             # Create menu items
             menu = pystray.Menu(
@@ -60,17 +60,19 @@ class TrayUI:
     def _open_next_problem(self, icon, item):
         """Handle open next problem action."""
         if self.on_open_next_problem:
-            # Handle async callback
-            import asyncio
-            try:
-                loop = asyncio.new_event_loop()
-                asyncio.set_event_loop(loop)
-                loop.run_until_complete(self.on_open_next_problem())
-                loop.close()
-            except Exception as e:
-                print(f"❌ Error in async callback: {e}")
-                # Fallback to sync call
-                threading.Thread(target=self.on_open_next_problem, daemon=True).start()
+            # Handle async callback in a separate thread
+            def run_async():
+                import asyncio
+                try:
+                    loop = asyncio.new_event_loop()
+                    asyncio.set_event_loop(loop)
+                    if self.on_open_next_problem:  # type: ignore
+                        loop.run_until_complete(self.on_open_next_problem())
+                    loop.close()
+                except Exception as e:
+                    print(f"❌ Error in async callback: {e}")
+            
+            threading.Thread(target=run_async, daemon=True).start()
         else:
             print("⚠️ Open next problem callback not set")
     
@@ -92,7 +94,8 @@ class TrayUI:
         
         try:
             self.is_running = True
-            self.icon.run()
+            if self.icon:  # type: ignore
+                self.icon.run()
             return True
         except Exception as e:
             print(f"❌ Error starting system tray: {e}")

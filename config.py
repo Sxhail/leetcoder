@@ -12,8 +12,8 @@ MIDDAY_CHECK = time(12, 0)        # 12:00 PM
 EVENING_CHECK = time(18, 0)       # 6:00 PM
 
 # Daily targets
-DAILY_TARGET = 4  # problems per day
-MIDDAY_TARGET = 2  # problems by midday
+DAILY_TARGET = 2  # problems per day (unblock after 2)
+MIDDAY_TARGET = 1  # problems by midday
 
 # Distracting domains to block
 DISTRACTING_DOMAINS = [

@@ -15,7 +15,7 @@ Each day the bot:
 ## ⚙️ Key Features
 
 - **Adaptive Scheduling & Smart Reminders**  
-  - **Micro-goals:** 2 problems by 12 PM, then 4 total by 6 PM.  
+  - **Micro-goals:** 1 problem by 12 PM, then 2 total by 6 PM.  
   - **Dynamic nudges:** Desktop or phone push notifications at each check if you're behind.
 
 - **System-wide blocking** of distracting domains via hosts-file edits  
