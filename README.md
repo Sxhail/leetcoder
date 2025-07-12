@@ -228,5 +228,3 @@ If you encounter any issues or have questions:
 3. Create a new issue with detailed information
 
 ---
-
-**Happy coding! 🚀**
