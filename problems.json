@@ -1,1 +1,529 @@
- 
+{
+  "problems": [
+    {
+      "id": 1,
+      "title": "Two Sum",
+      "slug": "two-sum",
+      "category": "Array",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 2,
+      "title": "Best Time to Buy and Sell Stock",
+      "slug": "best-time-to-buy-and-sell-stock",
+      "category": "Array",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 3,
+      "title": "Contains Duplicate",
+      "slug": "contains-duplicate",
+      "category": "Array",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 4,
+      "title": "Product of Array Except Self",
+      "slug": "product-of-array-except-self",
+      "category": "Array",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 5,
+      "title": "Maximum Subarray",
+      "slug": "maximum-subarray",
+      "category": "Array",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 6,
+      "title": "Maximum Product Subarray",
+      "slug": "maximum-product-subarray",
+      "category": "Array",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 7,
+      "title": "Find Minimum in Rotated Sorted Array",
+      "slug": "find-minimum-in-rotated-sorted-array",
+      "category": "Array",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 8,
+      "title": "Search in Rotated Sorted Array",
+      "slug": "search-in-rotated-sorted-array",
+      "category": "Array",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 9,
+      "title": "3Sum",
+      "slug": "3sum",
+      "category": "Array",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 10,
+      "title": "Container With Most Water",
+      "slug": "container-with-most-water",
+      "category": "Array",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 11,
+      "title": "Sum of Two Integers",
+      "slug": "sum-of-two-integers",
+      "category": "Bit Manipulation",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 12,
+      "title": "Number of 1 Bits",
+      "slug": "number-of-1-bits",
+      "category": "Bit Manipulation",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 13,
+      "title": "Counting Bits",
+      "slug": "counting-bits",
+      "category": "Bit Manipulation",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 14,
+      "title": "Missing Number",
+      "slug": "missing-number",
+      "category": "Bit Manipulation",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 15,
+      "title": "Reverse Bits",
+      "slug": "reverse-bits",
+      "category": "Bit Manipulation",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 16,
+      "title": "Climbing Stairs",
+      "slug": "climbing-stairs",
+      "category": "Dynamic Programming",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 17,
+      "title": "Coin Change",
+      "slug": "coin-change",
+      "category": "Dynamic Programming",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 18,
+      "title": "Longest Increasing Subsequence",
+      "slug": "longest-increasing-subsequence",
+      "category": "Dynamic Programming",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 19,
+      "title": "Longest Common Subsequence",
+      "slug": "longest-common-subsequence",
+      "category": "Dynamic Programming",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 20,
+      "title": "Word Break Problem",
+      "slug": "word-break",
+      "category": "Dynamic Programming",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 21,
+      "title": "Combination Sum",
+      "slug": "combination-sum",
+      "category": "Dynamic Programming",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 22,
+      "title": "House Robber",
+      "slug": "house-robber",
+      "category": "Dynamic Programming",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 23,
+      "title": "House Robber II",
+      "slug": "house-robber-ii",
+      "category": "Dynamic Programming",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 24,
+      "title": "Decode Ways",
+      "slug": "decode-ways",
+      "category": "Dynamic Programming",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 25,
+      "title": "Unique Paths",
+      "slug": "unique-paths",
+      "category": "Dynamic Programming",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 26,
+      "title": "Jump Game",
+      "slug": "jump-game",
+      "category": "Dynamic Programming",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 27,
+      "title": "Clone Graph",
+      "slug": "clone-graph",
+      "category": "Graph",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 28,
+      "title": "Course Schedule",
+      "slug": "course-schedule",
+      "category": "Graph",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 29,
+      "title": "Pacific Atlantic Water Flow",
+      "slug": "pacific-atlantic-water-flow",
+      "category": "Graph",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 30,
+      "title": "Number of Islands",
+      "slug": "number-of-islands",
+      "category": "Graph",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 31,
+      "title": "Graph Valid Tree",
+      "slug": "graph-valid-tree",
+      "category": "Graph",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 32,
+      "title": "Number of Connected Components in an Undirected Graph",
+      "slug": "number-of-connected-components-in-an-undirected-graph",
+      "category": "Graph",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 33,
+      "title": "Reverse Linked List",
+      "slug": "reverse-linked-list",
+      "category": "Linked List",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 34,
+      "title": "Linked List Cycle",
+      "slug": "linked-list-cycle",
+      "category": "Linked List",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 35,
+      "title": "Merge Two Sorted Lists",
+      "slug": "merge-two-sorted-lists",
+      "category": "Linked List",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 36,
+      "title": "Merge K Sorted Lists",
+      "slug": "merge-k-sorted-lists",
+      "category": "Linked List",
+      "difficulty": "Hard"
+    },
+    {
+      "id": 37,
+      "title": "Remove Nth Node From End of List",
+      "slug": "remove-nth-node-from-end-of-list",
+      "category": "Linked List",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 38,
+      "title": "Reorder List",
+      "slug": "reorder-list",
+      "category": "Linked List",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 39,
+      "title": "Set Matrix Zeroes",
+      "slug": "set-matrix-zeroes",
+      "category": "Matrix",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 40,
+      "title": "Spiral Matrix",
+      "slug": "spiral-matrix",
+      "category": "Matrix",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 41,
+      "title": "Rotate Image",
+      "slug": "rotate-image",
+      "category": "Matrix",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 42,
+      "title": "Word Search",
+      "slug": "word-search",
+      "category": "Matrix",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 43,
+      "title": "Longest Substring Without Repeating Characters",
+      "slug": "longest-substring-without-repeating-characters",
+      "category": "String",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 44,
+      "title": "Longest Repeating Character Replacement",
+      "slug": "longest-repeating-character-replacement",
+      "category": "String",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 45,
+      "title": "Minimum Window Substring",
+      "slug": "minimum-window-substring",
+      "category": "String",
+      "difficulty": "Hard"
+    },
+    {
+      "id": 46,
+      "title": "Valid Anagram",
+      "slug": "valid-anagram",
+      "category": "String",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 47,
+      "title": "Group Anagrams",
+      "slug": "group-anagrams",
+      "category": "String",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 48,
+      "title": "Valid Parentheses",
+      "slug": "valid-parentheses",
+      "category": "String",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 49,
+      "title": "Valid Palindrome",
+      "slug": "valid-palindrome",
+      "category": "String",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 50,
+      "title": "Longest Palindromic Substring",
+      "slug": "longest-palindromic-substring",
+      "category": "String",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 51,
+      "title": "Palindromic Substrings",
+      "slug": "palindromic-substrings",
+      "category": "String",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 52,
+      "title": "Encode and Decode Strings",
+      "slug": "encode-and-decode-strings",
+      "category": "String",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 53,
+      "title": "Maximum Depth of Binary Tree",
+      "slug": "maximum-depth-of-binary-tree",
+      "category": "Tree",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 54,
+      "title": "Same Tree",
+      "slug": "same-tree",
+      "category": "Tree",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 55,
+      "title": "Invert/Flip Binary Tree",
+      "slug": "invert-binary-tree",
+      "category": "Tree",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 56,
+      "title": "Binary Tree Maximum Path Sum",
+      "slug": "binary-tree-maximum-path-sum",
+      "category": "Tree",
+      "difficulty": "Hard"
+    },
+    {
+      "id": 57,
+      "title": "Serialization and Deserialization of Binary Tree",
+      "slug": "serialize-and-deserialize-binary-tree",
+      "category": "Tree",
+      "difficulty": "Hard"
+    },
+    {
+      "id": 58,
+      "title": "Binary Tree Level Order Traversal",
+      "slug": "binary-tree-level-order-traversal",
+      "category": "Tree",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 59,
+      "title": "Binary Tree Right Side View",
+      "slug": "binary-tree-right-side-view",
+      "category": "Tree",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 60,
+      "title": "Count Complete Tree Nodes",
+      "slug": "count-complete-tree-nodes",
+      "category": "Tree",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 61,
+      "title": "Validate Binary Search Tree",
+      "slug": "validate-binary-search-tree",
+      "category": "Tree",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 62,
+      "title": "Binary Search Tree Iterator",
+      "slug": "binary-search-tree-iterator",
+      "category": "Tree",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 63,
+      "title": "Lowest Common Ancestor of BST",
+      "slug": "lowest-common-ancestor-of-a-binary-search-tree",
+      "category": "Tree",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 64,
+      "title": "Implement Trie (Prefix Tree)",
+      "slug": "implement-trie-prefix-tree",
+      "category": "Trie",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 65,
+      "title": "Add and Search Word",
+      "slug": "design-add-and-search-words-data-structure",
+      "category": "Trie",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 66,
+      "title": "Word Search II",
+      "slug": "word-search-ii",
+      "category": "Trie",
+      "difficulty": "Hard"
+    },
+    {
+      "id": 67,
+      "title": "Merge K Sorted Lists",
+      "slug": "merge-k-sorted-lists",
+      "category": "Heap",
+      "difficulty": "Hard"
+    },
+    {
+      "id": 68,
+      "title": "Top K Frequent Elements",
+      "slug": "top-k-frequent-elements",
+      "category": "Heap",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 69,
+      "title": "Find Median from Data Stream",
+      "slug": "find-median-from-data-stream",
+      "category": "Heap",
+      "difficulty": "Hard"
+    },
+    {
+      "id": 70,
+      "title": "Insert Delete GetRandom O(1)",
+      "slug": "insert-delete-getrandom-o1",
+      "category": "Design",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 71,
+      "title": "LRU Cache",
+      "slug": "lru-cache",
+      "category": "Design",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 72,
+      "title": "LFU Cache",
+      "slug": "lfu-cache",
+      "category": "Design",
+      "difficulty": "Hard"
+    },
+    {
+      "id": 73,
+      "title": "All O(1) Data Structure",
+      "slug": "all-oone-data-structure",
+      "category": "Design",
+      "difficulty": "Hard"
+    },
+    {
+      "id": 74,
+      "title": "Min Stack",
+      "slug": "min-stack",
+      "category": "Design",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 75,
+      "title": "Implement Stack using Queues",
+      "slug": "implement-stack-using-queues",
+      "category": "Design",
+      "difficulty": "Easy"
+    }
+  ]
+} 

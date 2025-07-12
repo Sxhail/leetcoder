@@ -1,1 +1,10 @@
- 
+playwright==1.40.0
+gspread==5.12.0
+google-auth==2.23.4
+keyring==24.3.0
+pystray==0.19.4
+Pillow==10.1.0
+plyer==2.1.0
+schedule==1.2.0
+requests==2.31.0
+python-dateutil==2.8.2 
