@@ -8,19 +8,20 @@ import time
 import logging
 import sys
 import os
+import threading
 from datetime import datetime, time as dt_time
 from typing import Optional
 import win32serviceutil
 import win32service
 import win32event
 import servicemanager
-import socket
 
 # Add current directory to path for imports
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from main import LeetCodeEnforcer
 import config
+from command_handler import register_callback, start_listening, stop_listening
 
 class LeetCodeEnforcerService(win32serviceutil.ServiceFramework):
     """Windows service for LeetCode Enforcer Bot."""
@@ -63,6 +64,13 @@ class LeetCodeEnforcerService(win32serviceutil.ServiceFramework):
             self.enforcer = LeetCodeEnforcer()
             logging.info("LeetCode Enforcer initialized")
             
+            # Register command callbacks
+            self._register_commands()
+            
+            # Start command listener
+            start_listening()
+            logging.info("Command listener started")
+            
             # Start system tray in background thread
             self._start_tray_ui()
             
@@ -72,6 +80,14 @@ class LeetCodeEnforcerService(win32serviceutil.ServiceFramework):
         except Exception as e:
             logging.error(f"Service error: {e}")
             self.is_running = False
+        finally:
+            stop_listening()
+    
+    def _register_commands(self):
+        """Register command callbacks."""
+        register_callback("mark_completed", self._mark_completed)
+        register_callback("open_next_problem", self._open_next_problem)
+        register_callback("view_logs", self._view_logs)
     
     def _start_tray_ui(self):
         """Start the system tray interface in background."""
@@ -103,25 +119,37 @@ class LeetCodeEnforcerService(win32serviceutil.ServiceFramework):
         except Exception as e:
             logging.error(f"Error starting tray UI: {e}")
     
-    def _mark_completed(self):
+    def _mark_completed(self, data=None):
         """Handle manual completion marking from tray."""
         logging.info("Manual completion marked from tray")
         try:
             if self.enforcer:
                 self.enforcer.mark_completed()
+            else:
+                logging.warning("Enforcer not initialized")
         except Exception as e:
             logging.error(f"Error in mark completed: {e}")
     
-    def _open_next_problem(self):
+    def _open_next_problem(self, data=None):
         """Handle opening next problem from tray."""
         logging.info("Opening next problem from tray")
         try:
             if self.enforcer:
-                asyncio.run(self.enforcer.open_next_problem())
+                # Run in a new thread to handle async
+                def run_async():
+                    try:
+                        if self.enforcer:
+                            asyncio.run(self.enforcer.open_next_problem())
+                    except Exception as e:
+                        logging.error(f"Error in async open_next_problem: {e}")
+                
+                threading.Thread(target=run_async, daemon=True).start()
+            else:
+                logging.warning("Enforcer not initialized")
         except Exception as e:
             logging.error(f"Error opening next problem: {e}")
     
-    def _view_logs(self):
+    def _view_logs(self, data=None):
         """Handle viewing logs from tray."""
         logging.info("View logs requested from tray")
         print("📊 Logs functionality removed (Google Sheets integration disabled)")

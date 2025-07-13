@@ -6,7 +6,7 @@ Parses CLI flags and coordinates all modules.
 import argparse
 import asyncio
 import sys
-from datetime import datetime, time
+from datetime import datetime
 from typing import Optional
 
 from auth_manager import AuthManager
@@ -25,7 +25,6 @@ class LeetCodeEnforcer:
         self.blocker = Blocker()
         self.notifier = Notifier()
         self.workflow_manager = WorkflowManager()
-        self.logger = None
         self.progress_tracker = None
         self.tray_ui = None
         
@@ -54,17 +53,14 @@ class LeetCodeEnforcer:
                 # Check yesterday's progress
                 progress = await self.progress_tracker.check_yesterday_progress()
                 required_count = config.MIDDAY_TARGET
-                target_date = "yesterday"
             elif check_type == "midday":
                 # Check today's progress so far
                 progress = await self.progress_tracker.check_today_progress()
                 required_count = config.MIDDAY_TARGET
-                target_date = "today"
             elif check_type == "evening":
                 # Check today's total progress
                 progress = await self.progress_tracker.check_today_progress()
                 required_count = config.DAILY_TARGET
-                target_date = "today"
             else:
                 print(f"❌ Unknown check type: {check_type}")
                 return False

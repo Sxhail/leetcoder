@@ -4,8 +4,11 @@ tray_ui.py - Provides a system tray interface for manual actions (mark completed
 
 import threading
 import webbrowser
+import os
+import sys
 from typing import Optional, Callable
 import config
+from command_handler import send_command
 
 class TrayUI:
     """System tray interface for LeetCode Enforcer Bot."""
@@ -55,7 +58,13 @@ class TrayUI:
         if self.on_mark_completed:
             threading.Thread(target=self.on_mark_completed, daemon=True).start()
         else:
-            print("⚠️ Mark completed callback not set")
+            # Send command to service
+            if send_command("mark_completed"):
+                if self.icon:
+                    self.icon.notify("LeetCode Enforcer", "Mark completed command sent")
+            else:
+                if self.icon:
+                    self.icon.notify("LeetCode Enforcer", "Failed to send command")
     
     def _open_next_problem(self, icon, item):
         """Handle open next problem action."""
@@ -74,14 +83,34 @@ class TrayUI:
             
             threading.Thread(target=run_async, daemon=True).start()
         else:
-            print("⚠️ Open next problem callback not set")
+            # Send command to service
+            if send_command("open_next_problem"):
+                if self.icon:
+                    self.icon.notify("LeetCode Enforcer", "Open next problem command sent")
+            else:
+                if self.icon:
+                    self.icon.notify("LeetCode Enforcer", "Failed to send command")
     
     def _view_logs(self, icon, item):
         """Handle view logs action."""
         if self.on_view_logs:
             threading.Thread(target=self.on_view_logs, daemon=True).start()
         else:
-            print("📊 Logs functionality removed (Google Sheets integration disabled)")
+            # Open the log file directly
+            log_path = "C:\\leetcoder_service.log"
+            if os.path.exists(log_path):
+                try:
+                    os.startfile(log_path)
+                    if self.icon:
+                        self.icon.notify("LeetCode Enforcer", "Log file opened")
+                except Exception as e:
+                    print(f"❌ Error opening log file: {e}")
+                    if self.icon:
+                        self.icon.notify("LeetCode Enforcer", "Failed to open log file")
+            else:
+                print("📊 Log file not found")
+                if self.icon:
+                    self.icon.notify("LeetCode Enforcer", "Log file not found")
     
     def _exit_tray(self, icon, item):
         """Handle exit action."""
