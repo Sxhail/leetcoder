@@ -1,4 +1,4 @@
-# LeetCode Enforcer Bot
+# LeetTracker
 
 A lightweight Python-based productivity tool that ensures you solve at least **2 LeetCode Blind 75 series** questions every day. If you haven't met your daily target by the morning check, it blocks distractions and guides you through your pending problems—with **adaptive micro-goals** and **smart reminders** to keep you on track.
 
